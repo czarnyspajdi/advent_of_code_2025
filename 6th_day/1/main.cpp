@@ -9,37 +9,72 @@ vector<vector<string>> get_input(const string &FILE_NAME) {
   ifstream file(FILE_NAME);
 
   vector<vector<string>> result;
-  vector<string> local_vec;
-
-  size_t pos = 0;
   string s;
+
   while (getline(file, s)) {
-    while ((pos = s.find(" ")) != string::npos) {
+    size_t pos;
+    size_t i = 0;
+
+    while ((pos = s.find(' ')) != string::npos) {
       if (pos == 0) {
         s.erase(0, 1);
         continue;
       }
-      local_vec.push_back(s.substr(0, pos));
-      s.erase(0, pos);
-    }
-    local_vec.push_back(s);
-    result.push_back(local_vec);
-    local_vec.erase(local_vec.end());
-  }
+      string word = s.substr(0, pos);
+      s.erase(0, pos + 1);
 
+      if (i >= result.size()) {
+        result.emplace_back();
+      }
+
+      result[i].push_back(word);
+      i++;
+    }
+    if (!s.empty()) {
+      if (i >= result.size()) {
+        result.emplace_back();
+      }
+      result[i].push_back(s);
+    }
+  }
   return result;
 }
 
-int main() {
-  return 0;
-  const string &FILE_NAME = "example.txt";
-  vector<vector<string>> input = get_input(FILE_NAME);
-
-  for (vector<string> vec : input) {
-    cout << "Vec: " << endl;
-    for (string s : vec) {
-      cout << s << endl;
-      ;
+long long process_operation(vector<string> &input) {
+  char operation = input.back()[0];
+  input.pop_back();
+  long long sum;
+  switch (operation) {
+  case '+':
+    sum = 0;
+    cout << "Now we are adding numbers: ";
+    for (string value : input) {
+      cout << value << " ";
+      sum += stoll(value);
     }
+    cout << endl;
+    break;
+  case '*':
+    sum = 1;
+    cout << "Now we are multiplying numbers: ";
+    for (string value : input) {
+      cout << value << " ";
+      sum *= stoll(value);
+    }
+    cout << endl;
+    break;
   }
+  cout << "The sum is " << sum << endl;
+  return sum;
+}
+
+int main() {
+  const string FILE_NAME = "input.txt";
+  vector<vector<string>> input = get_input(FILE_NAME);
+  long long sum = 0;
+  for (vector<string> group : input) {
+    sum += process_operation(group);
+  }
+  cout << sum;
+  return 0;
 }
