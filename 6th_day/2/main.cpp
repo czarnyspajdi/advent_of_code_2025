@@ -52,7 +52,7 @@ vector<vector<string>> process_input(const vector<string> &input) {
       }
     }
     if (new_column != "") {
-      group.push_back(new_column);
+      group.push_back(std::move(new_column));
       new_column.clear();
     }
 
@@ -74,7 +74,7 @@ long long process_operation(vector<string> &input) {
   case '+':
     sum = 0;
     cout << "Now we are adding numbers: ";
-    for (string value : input) {
+    for (const string &value : input) {
       cout << value << " ";
       sum += stoll(value);
     }
@@ -83,7 +83,7 @@ long long process_operation(vector<string> &input) {
   case '*':
     sum = 1;
     cout << "Now we are multiplying numbers: ";
-    for (string value : input) {
+    for (const string &value : input) {
       cout << value << " ";
       sum *= stoll(value);
     }
