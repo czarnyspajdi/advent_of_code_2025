@@ -21,26 +21,24 @@ vector<string> get_input(const string &FILE_NAME) {
   return result;
 }
 
-int count_rows(const vector<string> &input) {
-  int count = 0;
-  for (string row : input) {
-    count++;
-  }
-
-  return count;
-}
-
 vector<vector<string>> process_input(const vector<string> &input) {
   string new_column = "";
+
   vector<vector<string>> result;
   vector<string> group;
+
   char expresion = ' ';
+  const int row_count = input.size();
+  const int column_count = input.front().size();
+
+  group.reserve(row_count + 1);
+  new_column.reserve(row_count);
 
   // for every row from behind
-  for (int i = input[0].length() - 1; i >= 0; i--) {
+  for (int i = column_count - 1; i >= 0; i--) {
 
     // for every column
-    for (int j = 0; j < count_rows(input); j++) {
+    for (int j = 0; j < row_count; j++) {
 
       char symbol = input[j][i];
       if (symbol == ' ') {
@@ -55,7 +53,7 @@ vector<vector<string>> process_input(const vector<string> &input) {
     }
     if (new_column != "") {
       group.push_back(new_column);
-      new_column = "";
+      new_column.clear();
     }
 
     if (expresion != ' ') {
